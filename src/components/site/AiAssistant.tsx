@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Bot, X, Send } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { askAssistant } from "@/lib/assistant.functions";
 import { DemoBadge, scrollToSection } from "./primitives";
 
 type Msg = { from: "ai" | "me"; text: string };
@@ -21,31 +23,43 @@ export function AiAssistant() {
   const [msgs, setMsgs] = useState<Msg[]>([{ from: "ai", text: "Hi! I'm a demo of the kind of assistant we build for agencies. Ask me anything." }]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  const [live, setLive] = useState(false); // true once OpenRouter has answered
   const nav = useNavigate();
+  const ask = useServerFn(askAssistant);
   const end = useRef<HTMLDivElement>(null);
-  useEffect(() => end.current?.scrollIntoView({ behavior: "smooth" }), [msgs, typing]);
+  useEffect(() => { end.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs, typing]);
 
-  const send = (text: string) => {
+  const send = async (text: string) => {
     const t = text.trim().slice(0, 300);
-    if (!t) return;
+    if (!t || typing) return;
     setMsgs((m) => [...m, { from: "me", text: t }]);
     setInput(""); setTyping(true);
-    setTimeout(() => {
+
+    const finish = (r: string) => {
       setTyping(false);
-      const r = reply(t);
       setMsgs((m) => [...m, { from: "ai", text: r }]);
       if (r.startsWith("Great")) setTimeout(() => { setOpen(false); if (!scrollToSection("book-demo")) nav({ to: "/", hash: "book-demo" }); }, 900);
-    }, 700);
+    };
+
+    // Booking requests go straight to the form; everything else asks OpenRouter when a key is configured.
+    if (/\b(book|demo|call)\b/i.test(t)) { setTimeout(() => finish(reply(t)), 500); return; }
+    const history = [...msgs, { from: "me" as const, text: t }].slice(1) // drop the greeting
+      .map((m) => ({ role: m.from === "me" ? ("user" as const) : ("assistant" as const), content: m.text })).slice(-10);
+    try {
+      const res = await ask({ data: { messages: history } });
+      if (res.ok) { setLive(true); finish(res.text); return; }
+    } catch { /* fall through to the scripted reply */ }
+    finish(reply(t));
   };
 
   return (
     <>
       {open && (
-        <div role="dialog" aria-label="AI assistant demonstration" className="glass fixed right-4 bottom-24 z-50 flex h-[480px] w-[calc(100vw-2rem)] max-w-sm flex-col rounded-3xl animate-slide-in"
+        <div role="dialog" aria-label={live ? "AI assistant" : "AI assistant demonstration"} className="glass fixed right-4 bottom-24 z-50 flex h-[480px] w-[calc(100vw-2rem)] max-w-sm flex-col rounded-3xl animate-slide-in"
           onKeyDown={(e) => e.key === "Escape" && setOpen(false)}>
           <div className="flex items-center justify-between border-b border-border p-4">
             <div className="flex items-center gap-2"><span className="grid h-8 w-8 place-items-center rounded-full bg-brand"><Bot className="h-4 w-4" /></span><span className="font-semibold">Keystone Assistant</span></div>
-            <div className="flex items-center gap-2"><DemoBadge label="Demo" /><button aria-label="Close assistant" onClick={() => setOpen(false)}><X className="h-4 w-4" /></button></div>
+            <div className="flex items-center gap-2">{live ? <span className="rounded-full bg-success/15 px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-success">Live AI</span> : <DemoBadge label="Demo" />}<button aria-label="Close assistant" onClick={() => setOpen(false)}><X className="h-4 w-4" /></button></div>
           </div>
           <div className="flex-1 space-y-3 overflow-y-auto p-4" aria-live="polite">
             {msgs.map((m, i) => (
