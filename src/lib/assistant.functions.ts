@@ -27,7 +27,7 @@ export const askAssistant = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<ChatResult> => {
     const key = process.env["OPENROUTER_API_KEY"]?.trim();
     if (!key) return { ok: false, reason: "no-key" };
-    const model = process.env["OPENROUTER_MODEL"]?.trim() || "openai/gpt-4o-mini";
+    const model = process.env["OPENROUTER_MODEL"]?.trim() || "deepseek/deepseek-v4-flash";
     try {
       const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
         method: "POST",
@@ -40,8 +40,11 @@ export const askAssistant = createServerFn({ method: "POST" })
         },
         body: JSON.stringify({
           model,
-          max_tokens: 350,
+          max_tokens: 500,
           temperature: 0.4,
+          // DeepSeek V4 is a reasoning model; hidden "thinking" can use the whole token budget and leave an empty reply.
+          // Short customer-service answers don't need it, and skipping it is faster and cheaper. Ignored by non-reasoning models.
+          reasoning: { enabled: false },
           messages: [{ role: "system", content: SYSTEM_PROMPT }, ...data.messages],
         }),
       });
@@ -49,8 +52,9 @@ export const askAssistant = createServerFn({ method: "POST" })
         console.error("[assistant] OpenRouter responded", res.status);
         return { ok: false, reason: "error" };
       }
-      const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+      const json = (await res.json()) as { choices?: { message?: { content?: string | null }; finish_reason?: string }[] };
       const text = json.choices?.[0]?.message?.content?.trim();
+      if (!text) console.error("[assistant] empty reply, finish_reason:", json.choices?.[0]?.finish_reason ?? "unknown");
       return text ? { ok: true, text } : { ok: false, reason: "error" };
     } catch (e) {
       console.error("[assistant] request failed", e instanceof Error ? e.name : "unknown");
