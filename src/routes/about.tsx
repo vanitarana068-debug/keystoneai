@@ -19,7 +19,7 @@ export const Route = createFileRoute("/about")({
   component: () => (<>
     <PageHeader eyebrow="About" title={<>Practical AI for <span className="text-gradient">people-first agencies.</span></>} text="We help UK estate agencies capture more enquiries, automate repetitive operations, reduce missed opportunities and improve business performance using AI." />
     <section className="px-6 pb-16"><div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
-      {VALUES.map((v, i) => <Reveal key={v.t} delay={i * 90} className="glass rounded-3xl p-8"><v.icon className="h-7 w-7 text-cyan" /><h2 className="mt-5 text-2xl font-semibold">{v.t}</h2><p className="mt-2 text-sm text-muted-foreground">{v.d}</p></Reveal>)}
+      {VALUES.map((v, i) => <Reveal key={v.t} delay={i * 90} className="tilt glass rounded-3xl p-8"><v.icon className="h-7 w-7 text-cyan" /><h2 className="mt-5 text-2xl font-semibold">{v.t}</h2><p className="mt-2 text-sm text-muted-foreground">{v.d}</p></Reveal>)}
     </div></section>
     <HowItWorks />
   </>),

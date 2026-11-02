@@ -18,7 +18,7 @@ export function Problems() {
         <SectionHeading eyebrow="The problem" title={<>Every unanswered enquiry is <span className="text-gradient">a lost instruction.</span></>} text="Busy UK agencies face the same leaks. The good news: most are fixable with the right automation." />
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {items.map((it, i) => (
-            <Reveal key={it.title} delay={i * 90} className="glass rounded-3xl p-7">
+            <Reveal key={it.title} delay={i * 90} className="tilt glass rounded-3xl p-7">
               <it.icon className="mb-6 h-7 w-7 text-destructive" />
               <h3 className="text-xl font-semibold">{it.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{it.text}</p>
@@ -100,7 +100,7 @@ export function StatsStrip() {
   const stats = [{ to: 24, s: "/7", l: "Enquiry coverage possible" }, { to: 7, s: "", l: "Core AI solutions" }, { to: 4, s: "", l: "Step delivery process" }, { to: 45, s: " min", l: "Free strategy call" }];
   return (
     <section className="px-6 py-10">
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 rounded-3xl glass p-8 md:grid-cols-4">
+      <div className="tilt tilt-soft mx-auto grid max-w-7xl grid-cols-2 gap-6 rounded-3xl glass p-8 md:grid-cols-4">
         {stats.map((s) => (
           <div key={s.l}>
             <p className="font-display text-4xl font-medium text-gradient md:text-5xl"><Counter to={s.to} suffix={s.s} /></p>
@@ -120,7 +120,7 @@ export function HowItWorks() {
         <SectionHeading eyebrow="How it works" title={<>Discover → Strategy → <span className="text-gradient">Implementation → Optimisation</span></>} />
         <div className="grid gap-4 md:grid-cols-4">
           {STEPS.map((s, i) => (
-            <Reveal key={s.n} delay={i * 100} className="glass group relative rounded-3xl p-7 transition hover:-translate-y-1">
+            <Reveal key={s.n} delay={i * 100} className="tilt glass group relative rounded-3xl p-7">
               <p className="font-display text-6xl font-medium text-gradient opacity-80">{s.n}</p>
               <h3 className="mt-6 text-2xl font-semibold">{s.title}</h3>
               <p className="mt-3 text-sm text-muted-foreground">{s.text}</p>
@@ -145,7 +145,7 @@ export function Industries() {
               className={cn("rounded-full border px-5 py-2.5 text-sm font-semibold transition", tab === i.id ? "border-cyan bg-secondary text-cyan" : "border-border text-muted-foreground hover:text-foreground")}>{i.title}</button>
           ))}
         </div>
-        <div key={cur.id} role="tabpanel" className="glass grid gap-8 rounded-3xl p-8 animate-slide-in md:grid-cols-2 md:p-12">
+        <div key={cur.id} role="tabpanel" className="tilt tilt-soft glass grid gap-8 rounded-3xl p-8 animate-slide-in md:grid-cols-2 md:p-12">
           <div>
             <h3 className="text-3xl font-medium">{cur.title}</h3>
             <p className="mt-3 text-muted-foreground">{cur.text}</p>

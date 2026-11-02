@@ -16,6 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/site/Header";
 import { Footer, FinalCta } from "@/components/site/Footer";
 import { AiAssistant } from "@/components/site/AiAssistant";
+import { Motion3D } from "@/components/site/Motion3D";
 
 function NotFoundComponent() {
   return (
@@ -132,6 +133,7 @@ function RootComponent() {
       </main>
       <Footer />
       <AiAssistant />
+      <Motion3D />
     </QueryClientProvider>
   );
 }
