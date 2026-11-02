@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { NAV } from "@/lib/content";
 import { Logo } from "./Header";
-import { BookCta, Reveal } from "./primitives";
+import { BookCta, BookLink, Reveal } from "./primitives";
 
 export function FinalCta() {
   return (
@@ -12,7 +12,7 @@ export function FinalCta() {
           <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground">A free 45-minute strategy call to map where AI can help your agency — no obligation, no jargon.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <BookCta className="bg-white text-[#262626] hover:bg-highlight" />
-            <Link to="/pricing" hash="book-demo" className="inline-flex items-center rounded-full px-6 py-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground">See a free demo →</Link>
+            <BookLink className="inline-flex items-center rounded-full px-6 py-3.5 text-sm font-semibold text-muted-foreground hover:text-foreground">See a free demo →</BookLink>
           </div>
         </div>
       </Reveal>
@@ -32,13 +32,12 @@ export function Footer() {
           <h3 className="mb-4 text-sm font-semibold">Explore</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {NAV.map((n) => <li key={n.to}><Link to={n.to} className="hover:text-foreground">{n.label}</Link></li>)}
-            <li><Link to="/pricing" className="hover:text-foreground">Free demo</Link></li>
           </ul>
         </div>
         <div>
           <h3 className="mb-4 text-sm font-semibold">Get in touch</h3>
           <ul className="space-y-2 text-sm text-muted-foreground">
-            <li><Link to="/contact" search={{ intent: "strategy-call" }} className="hover:text-foreground">Book a strategy call</Link></li>
+            <li><BookLink className="hover:text-foreground">Book a free demo</BookLink></li>
             <li><Link to="/contact" className="hover:text-foreground">Contact form</Link></li>
             <li>United Kingdom</li>
           </ul>

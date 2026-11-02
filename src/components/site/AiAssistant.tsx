@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Bot, X, Send } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
-import { DemoBadge } from "./primitives";
+import { DemoBadge, scrollToSection } from "./primitives";
 
 type Msg = { from: "ai" | "me"; text: string };
 const QUICK = ["What can the AI receptionist do?", "Does it work for lettings?", "How much does it cost?", "Book a strategy call"];
@@ -34,7 +34,7 @@ export function AiAssistant() {
       setTyping(false);
       const r = reply(t);
       setMsgs((m) => [...m, { from: "ai", text: r }]);
-      if (r.startsWith("Great")) setTimeout(() => { setOpen(false); nav({ to: "/contact", search: { intent: "strategy-call" } }); }, 900);
+      if (r.startsWith("Great")) setTimeout(() => { setOpen(false); if (!scrollToSection("book-demo")) nav({ to: "/", hash: "book-demo" }); }, 900);
     }, 700);
   };
 

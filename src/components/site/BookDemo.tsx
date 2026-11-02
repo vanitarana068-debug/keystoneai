@@ -23,6 +23,12 @@ export function BookDemo() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   useEffect(() => { setDays(upcomingWeekdays(10)); }, []);
+  // Arriving from another page via /#book-demo: the router resets scroll on navigation, so scroll here once mounted.
+  useEffect(() => {
+    if (window.location.hash !== "#book-demo") return;
+    const t = setTimeout(() => document.getElementById("book-demo")?.scrollIntoView({ behavior: "instant", block: "start" }), 300);
+    return () => clearTimeout(t);
+  }, []);
 
   const picked = days.find((d) => d.iso === date);
 
@@ -46,7 +52,7 @@ export function BookDemo() {
   const aria = (k: string) => ({ "aria-invalid": !!errors[k], "aria-describedby": errors[k] ? `demo-${k}-err` : undefined });
 
   return (
-    <section id="book-demo" data-scroll3d className="book-3d scroll-mt-28 px-6 py-20">
+    <section id="book-demo" data-scroll3d suppressHydrationWarning className="book-3d scroll-mt-28 px-6 py-20">
       <Reveal className="mx-auto grid max-w-7xl overflow-hidden rounded-[1.5rem] shadow-[0_40px_80px_-40px_rgb(0_0_0/0.35)] lg:grid-cols-[0.85fr_1.15fr]">
         <div className="on-dark flex flex-col bg-[#262626] p-8 md:p-12">
           <Eyebrow>Free live demo</Eyebrow>

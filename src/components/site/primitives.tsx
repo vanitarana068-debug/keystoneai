@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
@@ -68,7 +68,27 @@ export const btn = {
 };
 
 export function BookCta({ children = "Book Your Free AI Strategy Call", className }: { children?: ReactNode; className?: string }) {
-  return <Link to="/contact" search={{ intent: "strategy-call" }} className={cn(btn.primary, className)}>{children}</Link>;
+  return <BookLink className={cn(btn.primary, className)}>{children}</BookLink>;
+}
+
+/** Scrolls an element into view and records it in the URL, for same-page links the router would ignore. */
+export function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
+  window.history.replaceState(window.history.state, "", `/#${id}`);
+  return true;
+}
+
+/** Link to the demo booking form on the homepage; on the homepage itself it scrolls there directly. */
+export function BookLink({ children, className, onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
+  const pathname = useLocation({ select: (l) => l.pathname });
+  return (
+    <Link to="/" hash="book-demo" className={className} onClick={(e) => {
+      onClick?.();
+      if (pathname === "/" && scrollToSection("book-demo")) e.preventDefault();
+    }}>{children}</Link>
+  );
 }
 
 export function PageHeader({ eyebrow, title, text }: { eyebrow: string; title: ReactNode; text: string }) {

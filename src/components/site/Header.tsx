@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NAV } from "@/lib/content";
 import { cn } from "@/lib/utils";
+import { BookLink } from "./primitives";
 
 export function Logo() {
   return (
@@ -38,10 +39,10 @@ export function Header() {
               activeProps={{ className: "text-white" }}>{n.label}</Link>
           ))}
         </nav>
-        <Link to="/contact" search={{ intent: "strategy-call" }}
+        <BookLink
           className="hidden rounded-full bg-white px-5 py-2.5 text-[12px] font-medium uppercase tracking-[0.04em] text-[#262626] transition hover:bg-highlight lg:inline-flex">
           Book free call
-        </Link>
+        </BookLink>
         <button className="rounded-full p-2 text-white lg:hidden" aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(!open)}>
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
@@ -52,9 +53,8 @@ export function Header() {
             <Link key={n.to} to={n.to} onClick={() => setOpen(false)} activeOptions={{ exact: true }}
               className="rounded-2xl px-4 py-3 text-base text-white/70" activeProps={{ className: "bg-white/10 text-white" }}>{n.label}</Link>
           ))}
-          <Link to="/pricing" onClick={() => setOpen(false)} className="rounded-2xl px-4 py-3 text-base text-white/70">Free demo</Link>
-          <Link to="/contact" search={{ intent: "strategy-call" }} onClick={() => setOpen(false)}
-            className="mt-2 rounded-full bg-white px-5 py-3.5 text-center text-[13px] font-medium uppercase tracking-[0.04em] text-[#262626]">Book your free strategy call</Link>
+          <BookLink onClick={() => setOpen(false)}
+            className="mt-2 rounded-full bg-white px-5 py-3.5 text-center text-[13px] font-medium uppercase tracking-[0.04em] text-[#262626]">Book your free demo</BookLink>
         </nav>
       )}
     </header>

@@ -159,29 +159,6 @@ export function Industries() {
   );
 }
 
-export function CaseStudyPlaceholders() {
-  return (
-    <section className="px-6 py-28">
-      <div className="mx-auto max-w-7xl">
-        <SectionHeading eyebrow="Case studies & testimonials" title={<>Real results, <span className="text-gradient">when they're verified.</span></>} text="We only publish case studies and testimonials with verified evidence and client permission. These spaces are reserved until then." />
-        <div className="grid gap-4 md:grid-cols-3">
-          {[1, 2, 3].map((n) => (
-            <Reveal key={n} delay={n * 80} className="rounded-3xl border border-dashed border-border p-8">
-              <DemoBadge label="Placeholder" />
-              <p className="mt-6 font-display text-xl text-muted-foreground">"Client testimonial will appear here once verified."</p>
-              <div className="mt-8 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-muted" />
-                <div><div className="h-3 w-24 rounded bg-muted" /><div className="mt-2 h-2.5 w-32 rounded bg-muted/60" /></div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-        <p className="mt-8 text-center text-sm text-muted-foreground">Want to be one of our first pilot agencies? <Link to="/contact" search={{ intent: "implementation" }} className="text-cyan underline-offset-4 hover:underline">Talk to us</Link>.</p>
-      </div>
-    </section>
-  );
-}
-
 export function Faqs() {
   const [open, setOpen] = useState<number | null>(0);
   return (

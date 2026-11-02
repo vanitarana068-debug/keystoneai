@@ -5,7 +5,7 @@ import { Dashboard } from "@/components/site/Dashboard";
 import { RoiCalculator } from "@/components/site/RoiCalculator";
 import { BookDemo } from "@/components/site/BookDemo";
 import { BookCta, Reveal, btn, Eyebrow } from "@/components/site/primitives";
-import { Problems, SolutionsGrid, Workflow, StatsStrip, HowItWorks, Industries, CaseStudyPlaceholders, Faqs } from "@/components/site/Sections";
+import { Problems, SolutionsGrid, Workflow, StatsStrip, HowItWorks, Industries, Faqs } from "@/components/site/Sections";
 
 // Decorative depth layers in the hero; illustrative, not live data.
 const CHIPS = [
@@ -30,12 +30,12 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <>
-      <section data-scroll3d className="hero-3d on-dark relative flex min-h-[100svh] items-center overflow-hidden pt-32 pb-20">
+      <section data-scroll3d suppressHydrationWarning className="hero-3d on-dark relative flex min-h-[100svh] items-center overflow-hidden pt-32 pb-20">
         <img src={heroImg} alt="" width={1920} height={1088} fetchPriority="high" className="hero-bg absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-black/70" />
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 hidden xl:block">
           {CHIPS.map((c) => (
-            <div key={c.t} className="hero-chip glass absolute rounded-2xl px-4 py-3 text-left" style={{ left: c.x, top: c.y, "--d": c.d } as React.CSSProperties}>
+            <div key={c.t} className="hero-chip glass absolute rounded-2xl px-4 py-3 text-left" style={{ left: c.x, top: c.y, "--d": String(c.d) } as React.CSSProperties}>
               <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted-foreground">{c.k}</p>
               <p className="text-sm">{c.t}</p>
             </div>
@@ -51,7 +51,7 @@ function Index() {
           </div>
         </div></div>
       </section>
-      <section data-scroll3d className="dash-stage relative z-10 -mt-24 px-6 pb-10">
+      <section data-scroll3d suppressHydrationWarning className="dash-stage relative z-10 -mt-24 px-6 pb-10">
         <div className="mx-auto max-w-3xl animate-slide-in" style={{ animationDelay: "200ms" }}><div className="dash-3d"><Dashboard /></div></div>
       </section>
       <StatsStrip />
@@ -60,7 +60,7 @@ function Index() {
       <Workflow />
       <RoiCalculator />
       <HowItWorks />
-      <section data-scroll3d className="office-3d px-6 py-10">
+      <section data-scroll3d suppressHydrationWarning className="office-3d px-6 py-10">
         <Reveal className="on-dark relative mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] shadow-[0_40px_80px_-40px_rgb(0_0_0/0.45)]">
           <img src={officeImg} alt="Estate agency office at night" loading="lazy" width={1280} height={896} className="office-img h-[520px] w-full object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent" />
@@ -73,7 +73,6 @@ function Index() {
         </Reveal>
       </section>
       <Industries />
-      <CaseStudyPlaceholders />
       <BookDemo />
       <Faqs />
     </>
